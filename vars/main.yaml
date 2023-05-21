@@ -1,0 +1,7 @@
+---
+# Zmienne
+# marcin_stec@pl.ibm.com
+pkgs:
+  - zsh
+  - mc
+  - git

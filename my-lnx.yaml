@@ -1,0 +1,41 @@
+---
+# Stałe elementy gry przy instalacji nowego Linuxa do pracy
+# marcin_stec@pl.ibm.com
+- hosts: all
+  gather_facts: True
+  remote_user: root
+
+  tasks:
+    - name: Kolarze do sudo
+      copy:
+        src: wheel
+        dest: /etc/sudoers.d/
+        owner: root
+        group: root
+        mode: 0644
+    - name: Dodawanie Marcinka
+      user:
+        name: marcinek
+        comment: "Marcin Steć"
+        generate_ssh_key: True
+        ssh_key_type: ecdsa
+        groups: wheel
+        password: "$6$YCLqZWG8C9.FBcTS$lIiBxpM.3U6aZnfyKZNw46q/wDfBWzfBFDcc7TnqQLI6hxAgv8UhMhaZ84BwSGVyYO3JckIGF0Rwx/2x4wynZ1"
+        update_password: "on_create"
+    - name: CentOS 7 i inne Yum-Yumy
+      block:
+        - name: EPEL dla RH i CentOS 7-
+          yum:
+            name: epel-release
+            state: latest
+          when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version']|int <= 7
+        
+        - name: EPEL dla RH i CentOS 8+
+          dnf:
+            name: epel-release
+            state: latest
+          when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version']|int >= 8
+      when: ansible_facts['pkg_mgr'] == 'yum'
+      
+
+    
