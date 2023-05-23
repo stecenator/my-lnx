@@ -3,8 +3,8 @@
 # marcin_stec@pl.ibm.com
 - hosts: all
   gather_facts: True
-  remote_user: marcinek
-  become: True
+  remote_user: root
+  # become: True
 
   tasks:
     # - name: pokaż fakty
@@ -32,11 +32,12 @@
 
     - name: Przygotowanie EPEL dla RHEL8
       block:
-        - name: Gra wstępna RHEL8
-          debug:
-            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
         - name: Włączanie wymaganych repozytoriów
-          command: subscription-manager repos --enable codeready-builder-for-rhel-8-$(arch)-rpms
+          command: "subscription-manager repos --enable codeready-builder-for-rhel-8-{{ ansible_facts['architecture'] }}-rpms"
+        - name: Import klucza GPG dla EPEL
+          rpm_key:
+            state: present
+            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
         - name: Instlacja EPEL
           dnf:
             name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -45,11 +46,12 @@
 
     - name: Przygotowanie EPEL dla RHEL9
       block:
-        - name: Gra wstępna RHEL9
-          debug:
-            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
         - name: Włączanie wymaganych repozytoriów
-          command: subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+          command: "subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_facts['architecture'] }}-rpms"
+        - name: Import klucza GPG dla EPEL
+          rpm_key:
+            state: present
+            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
         - name: Instlacja EPEL
           dnf:
             name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
@@ -84,7 +86,7 @@
           command: dnf config-manager --set-enabled crb
         - name: Instlacja EPEL
           dnf:
-            name: item
+            name: {{ item }}
             state: present
           with_items:
             - epel-release 

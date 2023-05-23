@@ -22,20 +22,97 @@
         groups: wheel
         password: "$6$YCLqZWG8C9.FBcTS$lIiBxpM.3U6aZnfyKZNw46q/wDfBWzfBFDcc7TnqQLI6hxAgv8UhMhaZ84BwSGVyYO3JckIGF0Rwx/2x4wynZ1"
         update_password: "on_create"
-    - name: CentOS 7 i inne Yum-Yumy
-      block:
-        - name: EPEL dla RH i CentOS 7-
-          yum:
-            name: epel-release
-            state: latest
-          when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version']|int <= 7
-        
-        - name: EPEL dla RH i CentOS 8+
-          dnf:
-            name: epel-release
-            state: latest
-          when: ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version']|int >= 8
-      when: ansible_facts['pkg_mgr'] == 'yum'
-      
 
-    
+    - name: Przygotowanie EPEL dla RHEL7
+      block:
+        - name: Gra wstępna RHEL7
+          debug:
+            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
+        - name: Włączanie wymaganych repozytoriów
+          command: subscription-manager repos --enable rhel-*-optional-rpms --enable rhel-*-extras-rpms --enable rhel-ha-for-rhel-*-server-rpms
+        - name: Instlacja EPEL
+          yum:
+            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+            state: present
+      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '7'
+
+    - name: Przygotowanie EPEL dla RHEL8
+      block:
+        - name: Włączanie wymaganych repozytoriów
+          command: "subscription-manager repos --enable codeready-builder-for-rhel-8-{{ ansible_facts['architecture'] }}-rpms"
+        - name: Import klucza GPG dla EPEL
+          rpm_key:
+            state: present
+            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
+        - name: Instlacja EPEL
+          dnf:
+            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+            state: present
+      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8'
+
+    - name: Przygotowanie EPEL dla RHEL9
+      block:
+        - name: Włączanie wymaganych repozytoriów
+          command: "subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_facts['architecture'] }}-rpms"
+        - name: Import klucza GPG dla EPEL
+          rpm_key:
+            state: present
+            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+        - name: Instlacja EPEL
+          dnf:
+            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+            state: present
+      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9'
+
+    - name: Przygotowanie EPEL dla CentOS 7
+      yum:
+        name: epel-release
+        state: present
+      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '7'
+
+    - name: Przygotowanie EPEL dla CentOS 8
+      block:
+        - name: Gra wstępna CentOS8
+          debug:
+            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
+        - name: Włączanie wymaganych repozytoriów
+          command: dnf config-manager --set-enabled powertools
+        - name: Instlacja EPEL
+          dnf:
+            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+            state: present
+      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '8'
+
+    - name: Przygotowanie EPEL dla CentOS 9
+      block:
+        - name: Gra wstępna CentOS9
+          debug:
+            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
+        - name: Włączanie wymaganych repozytoriów
+          command: dnf config-manager --set-enabled crb
+        - name: Instlacja EPEL
+          dnf:
+            name: "{{ item }}"
+            state: present
+          with_items:
+            - epel-release 
+            - epel-next-release
+      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '9'
+
+    - name: Ulubione paczki na Yum-Yumach
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ pkgs }}"
+      when: ansible_facts['pkg_mgr'] == 'yum'
+      tags:
+        - "PKGS"
+
+    - name: Ulubione paczki na nowszych OSach
+      dnf:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ pkgs }}"
+      when: ansible_facts['pkg_mgr'] == 'dnf'
+      tags:
+        - "PKGS"

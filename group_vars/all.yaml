@@ -5,3 +5,5 @@ pkgs:
   - zsh
   - mc
   - git
+  - nmon
+  - bind-utils
