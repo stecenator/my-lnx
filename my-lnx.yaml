@@ -6,22 +6,7 @@
   remote_user: root
 
   tasks:
-    - name: Kolarze do sudo
-      copy:
-        src: wheel
-        dest: /etc/sudoers.d/
-        owner: root
-        group: root
-        mode: 0644
-    - name: Dodawanie Marcinka
-      user:
-        name: marcinek
-        comment: "Marcin Steć"
-        generate_ssh_key: True
-        ssh_key_type: ecdsa
-        groups: wheel
-        password: "$6$YCLqZWG8C9.FBcTS$lIiBxpM.3U6aZnfyKZNw46q/wDfBWzfBFDcc7TnqQLI6hxAgv8UhMhaZ84BwSGVyYO3JckIGF0Rwx/2x4wynZ1"
-        update_password: "on_create"
+
 
     - name: Przygotowanie EPEL dla RHEL7
       block:
@@ -116,3 +101,25 @@
       when: ansible_facts['pkg_mgr'] == 'dnf'
       tags:
         - "PKGS"
+
+    - name: Kolarze do sudo
+      copy:
+        src: wheel
+        dest: /etc/sudoers.d/
+        owner: root
+        group: root
+        mode: 0644
+      tags:
+        - "USER"
+    - name: Dodawanie Marcinka
+      user:
+        name: marcinek
+        comment: "Marcin Steć"
+        generate_ssh_key: True
+        ssh_key_type: ecdsa
+        groups: wheel
+        shell: /usr/bin/zsh
+        password: "$6$YCLqZWG8C9.FBcTS$lIiBxpM.3U6aZnfyKZNw46q/wDfBWzfBFDcc7TnqQLI6hxAgv8UhMhaZ84BwSGVyYO3JckIGF0Rwx/2x4wynZ1"
+        update_password: "on_create"
+      tags:
+        - "USER"
