@@ -3,7 +3,13 @@
 # marcin_stec@pl.ibm.com
 pkgs:
   - zsh
+  - zsh-syntax-highlighting
   - mc
   - git
   - nmon
   - bind-utils
+  - tmux
+  - powerline
+  - vim-powerline
+  - tmux-powerline
+  - powerline-fonts

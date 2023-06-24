@@ -123,3 +123,17 @@
         update_password: "on_create"
       tags:
         - "USER"
+
+    - name: zshrc dla marcinka
+      copy:
+        src: zshrc-pre-powerline10k
+        dest: /home/marcinek/.zshrc
+        owner: marcinek
+        group: marcinek
+        mode: 0644
+      tags:
+        - "USER"
+        - "ZSH"
+
+    # - name: Instlacja oh-my-zsh
+      
