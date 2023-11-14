@@ -119,7 +119,7 @@
         ssh_key_type: ecdsa
         groups: wheel
         shell: /usr/bin/zsh
-        password: "$6$YCLqZWG8C9.FBcTS$lIiBxpM.3U6aZnfyKZNw46q/wDfBWzfBFDcc7TnqQLI6hxAgv8UhMhaZ84BwSGVyYO3JckIGF0Rwx/2x4wynZ1"
+        password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, któ©e nie jest wrzucane do gita
         update_password: "on_create"
       tags:
         - "USER"

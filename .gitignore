@@ -40,3 +40,4 @@ Thumbs.db
 # ###################
 .obsidian
 dupa.txt
+vars/secret.enc
