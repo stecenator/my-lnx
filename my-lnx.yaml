@@ -119,7 +119,7 @@
         ssh_key_type: ecdsa
         groups: wheel
         shell: /usr/bin/zsh
-        password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, któ©e nie jest wrzucane do gita
+        password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, które nie jest wrzucane do gita
         update_password: "on_create"
       tags:
         - "USER"
@@ -135,5 +135,8 @@
         - "USER"
         - "ZSH"
 
-    # - name: Instlacja oh-my-zsh
-      
+    - name: Instlacja czcionek dla oh-my-zsh
+  
+      command: 
+      when: ansible_facts.selinux.status == 'enabled'
+      tags:  

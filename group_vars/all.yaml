@@ -13,3 +13,22 @@ pkgs:
   - vim-powerline
   - tmux-powerline
   - powerline-fonts
+  - wget
+  - curl
+  - ruby
+  - ruby-devel 
+  - util-linux-user
+  - redhat-rpm-config 
+  - gcc
+  - gcc-c++ 
+  - make
+
+# Paczki debianowe/ubuntowe
+debs: 
+  - zsh
+  - git
+  - powerline
+  - powerline-gitstatus
+  - zsh-theme-powerlevel9k
+  - tmux
+  - nmon
