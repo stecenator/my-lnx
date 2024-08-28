@@ -5,3 +5,24 @@ centos7.host-only
 sputnik.iic
 # repo-vpn.iic
 sp-1.iic
+toy ansible_port=2103 ansible_host=bws01.fp
+mini-shrek ansible_port=2104 ansible_host=bws01.fp
+shrek2 ansible_port=2102 ansible_host=bws01.fp
+
+[fp]
+toy
+mini-shrek
+shrek2
+
+[iic]
+sp-1.iic
+putnik.iic
+
+[host-only]
+stetson.host-only
+gklm1.host-only
+centos7.host-only
+
+[domek]
+mailina.dev.null
+pi.dev.null

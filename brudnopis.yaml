@@ -3,92 +3,36 @@
 # marcin_stec@pl.ibm.com
 - hosts: all
   gather_facts: True
-  remote_user: root
-  # become: True
+  remote_user: marcinek
+  become: True
 
   tasks:
+    - set_fact: user_grps={{ ansible_os_family }}_grps
     # - name: pokaż fakty
     #   debug:
     #     var: ansible_facts
-    # - name: yum-yum
-    #   block:
-    #     - name: Sciąganie repozytorium EPEL
-    #       debug:
-    #         msg: "Distro: {{ ansible_facts['distribution'] }}"
-
+    
+    - name: Pokaż paczkomat
+      debug:
+        msg: "Distro: {{ ansible_facts['distribution'] }}"
+      tags:
+        - "DBG"
       # when: ansible_facts['pkg_mgr'] == 'yum'
-    - name: Przygotowanie EPEL dla RHEL7
+    
+    - name: Określanie listy grup w zależności od distro
+      debug:
+        msg: "Zastosuję {{ user_grps}} do zakładania użyszkodnika"
+    
+    - name: Instalacja specyfików dla Powerline+ZSH dla systemów Debianów
       block:
-        - name: Gra wstępna RHEL7
+        - name: Warunkowe wykoanie bloku dla "bebianów"
           debug:
-            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
-        - name: Włączanie wymaganych repozytoriów
-          command: subscription-manager repos --enable rhel-*-optional-rpms --enable rhel-*-extras-rpms --enable rhel-ha-for-rhel-*-server-rpms
-        - name: Instlacja EPEL
-          yum:
-            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-            state: present
-      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '7'
+            msg: "Jestem Debianopodobny"
+      when: ansible_os_family == 'Debian'
 
-    - name: Przygotowanie EPEL dla RHEL8
+    - name: Instalacja specyfików dla Powerline+ZSH dla systemów RedHatopodobnych
       block:
-        - name: Włączanie wymaganych repozytoriów
-          command: "subscription-manager repos --enable codeready-builder-for-rhel-8-{{ ansible_facts['architecture'] }}-rpms"
-        - name: Import klucza GPG dla EPEL
-          rpm_key:
-            state: present
-            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8
-        - name: Instlacja EPEL
-          dnf:
-            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-            state: present
-      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '8'
-
-    - name: Przygotowanie EPEL dla RHEL9
-      block:
-        - name: Włączanie wymaganych repozytoriów
-          command: "subscription-manager repos --enable codeready-builder-for-rhel-9-{{ ansible_facts['architecture'] }}-rpms"
-        - name: Import klucza GPG dla EPEL
-          rpm_key:
-            state: present
-            key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
-        - name: Instlacja EPEL
-          dnf:
-            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-            state: present
-      when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9'
-
-    - name: Przygotowanie EPEL dla CentOS 7
-      yum:
-        name: epel-release
-        state: present
-      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '7'
-
-    - name: Przygotowanie EPEL dla CentOS 8
-      block:
-        - name: Gra wstępna CentOS8
+        - name: Warunkowe wykoanie bloku dla "bebianów"
           debug:
-            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
-        - name: Włączanie wymaganych repozytoriów
-          command: dnf config-manager --set-enabled powertools
-        - name: Instlacja EPEL
-          dnf:
-            name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-            state: present
-      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '8'
-
-    - name: Przygotowanie EPEL dla CentOS 9
-      block:
-        - name: Gra wstępna CentOS9
-          debug:
-            msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
-        - name: Włączanie wymaganych repozytoriów
-          command: dnf config-manager --set-enabled crb
-        - name: Instlacja EPEL
-          dnf:
-            name: {{ item }}
-            state: present
-          with_items:
-            - epel-release 
-            - epel-next-release
-      when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '9'
+            msg: "Jestem Debianopodobny"
+      when: ansible_os_family == 'Debian'

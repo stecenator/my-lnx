@@ -32,3 +32,9 @@ debs:
   - zsh-theme-powerlevel9k
   - tmux
   - nmon
+
+# Lista grup administracyjnych zależy od distro
+Debian_grps: "adm,sudo"
+Ubuntu_grps: "{{ Debian_grps }}"
+RedHat_grps: "wheel"
+Fedora_grps: "{{ RedHat_grps }}" # Ro rozożniania używam ansible_os_family, więć Fedora i tak dostanie RedHat ale na wszelki wypadek zostawiam

@@ -3,11 +3,12 @@
 # marcin_stec@pl.ibm.com
 - hosts: all
   gather_facts: True
-  remote_user: root
+  remote_user: marcinek
+  become: True
 
   tasks:
-
-
+    # ustalam listę grup dla usera w zależności od os family
+    - set_fact: user_grps={{ ansible_os_family }}_grps
     - name: Przygotowanie EPEL dla RHEL7
       block:
         - name: Gra wstępna RHEL7
@@ -102,6 +103,16 @@
       tags:
         - "PKGS"
 
+    - name: Ulubione paczki na mniej ulibionych OSach
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ debs }}"
+      when: ansible_facts['pkg_mgr'] == 'apt'
+      tags:
+        - "PKGS"
+
+
     - name: Kolarze do sudo
       copy:
         src: wheel
@@ -109,15 +120,17 @@
         owner: root
         group: root
         mode: 0644
+      # when: ansible_os_family == 'RedHat'
       tags:
         - "USER"
+
     - name: Dodawanie Marcinka
       user:
         name: marcinek
         comment: "Marcin Steć"
         generate_ssh_key: True
         ssh_key_type: ecdsa
-        groups: wheel
+        groups: "{{ vars[user_grps] }}"
         shell: /usr/bin/zsh
         password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, które nie jest wrzucane do gita
         update_password: "on_create"
@@ -135,8 +148,11 @@
         - "USER"
         - "ZSH"
 
-    - name: Instlacja czcionek dla oh-my-zsh
+    # - name: Instlacja czcionek dla oh-my-zsh
   
-      command: 
-      when: ansible_facts.selinux.status == 'enabled'
-      tags:  
+    #   command: 
+    #   when: ansible_facts.selinux.status == 'enabled'
+    #   tags:  
+    # - name: Instalacja specyfików dla Powerline+ZSH dla systemów RedHatopodobnych
+    #   block:
+    #     - name: 
