@@ -32,7 +32,7 @@
 
     - name: Instalacja specyfików dla Powerline+ZSH dla systemów RedHatopodobnych
       block:
-        - name: Warunkowe wykoanie bloku dla "bebianów"
+        - name: Warunkowe wykoanie bloku dla "kapcylindrów"
           debug:
-            msg: "Jestem Debianopodobny"
-      when: ansible_os_family == 'Debian'
+            msg: "Jestem Kapcylinderm"
+      when: ansible_os_family == 'RedHat'

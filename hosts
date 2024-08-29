@@ -10,7 +10,7 @@ mini-shrek ansible_port=2104 ansible_host=bws01.fp
 shrek2 ansible_port=2102 ansible_host=bws01.fp
 
 [fp]
-toy
+toy.frr
 mini-shrek
 shrek2
 
@@ -18,7 +18,7 @@ shrek2
 sp-1.iic
 putnik.iic
 
-[host-only]
+[host_only]
 stetson.host-only
 gklm1.host-only
 centos7.host-only
@@ -26,3 +26,6 @@ centos7.host-only
 [domek]
 mailina.dev.null
 pi.dev.null
+
+[work]
+toy.frr
