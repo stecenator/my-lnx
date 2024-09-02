@@ -22,6 +22,8 @@ pkgs:
   - gcc
   - gcc-c++ 
   - make
+  - nethogs
+  - fontawesome-fonts   # to może nie działać na RH <= 8 
 
 # Paczki debianowe/ubuntowe
 debs: 
@@ -32,9 +34,13 @@ debs:
   - zsh-theme-powerlevel9k
   - tmux
   - nmon
+  - nethogs
 
 # Lista grup administracyjnych zależy od distro
 Debian_grps: "adm,sudo"
 Ubuntu_grps: "{{ Debian_grps }}"
 RedHat_grps: "wheel"
 Fedora_grps: "{{ RedHat_grps }}" # Ro rozożniania używam ansible_os_family, więć Fedora i tak dostanie RedHat ale na wszelki wypadek zostawiam
+
+# Tymczasowy katalog roboczy wzgędem domowego
+work_dir: "{{ ansible_env.HOME }}/work"

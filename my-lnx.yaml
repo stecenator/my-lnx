@@ -13,6 +13,8 @@
   tasks:
     # ustalam listę grup dla usera w zależności od os family
     - set_fact: user_grps={{ ansible_os_family }}_grps
+      tags:
+        - always
    
     - name: Ulubione paczki na Yum-Yumach
       yum:
@@ -58,11 +60,12 @@
         name: marcinek
         comment: "Marcin Steć"
         generate_ssh_key: True
-        ssh_key_type: ecdsa
+        ssh_key_type: ed25519
         groups: "{{ vars[user_grps] }}"
         shell: /usr/bin/zsh
         password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, które nie jest wrzucane do gita
         update_password: "on_create"
+      register: marcinek_data
       tags:
         - "USER"
 
@@ -77,11 +80,70 @@
         - "USER"
         - "ZSH"
 
-    # - name: Instlacja czcionek dla oh-my-zsh
+    - name: zakładanie katalogu roboczego do instalacji czcionek
+      file:
+        path: "{{ work_dir }}"
+        state: directory
+      tags:
+        - "USER"
+        - "ZSH"
+
+    - name: Klonowanie repo czcionek nerdowych dla oh-my-zsh
+      command: 
+        cmd: git clone --depth=1 https://github.com/ryanoasis/nerd-fonts
+        chdir: "{{ work_dir }}"
+        creates: "{{ work_dir }}/nerd-fonts"
+      when: 
+      tags:
+        - "USER"
+        - "ZSH"
+    
+    - name: Instalowanie czcionek nerdowych dla oh-my-zsh (systemowo)
+      command: 
+        cmd: ./install.sh -S
+        chdir: "{{ work_dir }}/nerd-fonts"
+        creates: "/usr/local/share/fonts/NerdFonts" 
+      tags:
+        - "ZSH"
+
+    - block:
+      # Chrum-chrum dla usera marcinek. Trzeba się nim stać wcześniej, bo "creates" sprawdzane jest dla
+      # ansible_user a nie dla become 
+      - name: Uruchamianie skryptu instalacynego oh-my-zsh dla marcinka
+        shell: 
+          cmd: sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)" "" --unattended
+          creates: "{{ marcinek_data.home }}/.zshrc.pre-oh-my-zsh"
+        tags:
+          - "OH-MY-ZSH"
+
+      - name: Ściąganie powerlevel10k dla marcinka
+        shell: 
+          cmd: git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
+          creates: "{{ marcinek_data.home }}/.oh-my-zsh/themes/powerlevel10k"
+        tags:
+          - "OH-MY-ZSH"
+          - "P10K"
+      
+      - name: Ustawainie tematu ZSH na powerlevel10k
+        lineinfile:
+          path: "{{ marcinek_data.home }}/.zshrc"
+          regexp: '^ZSH_THEME='
+          line: ZSH_THEME=powerlevel10k/powerlevel10k
+        tags:
+          - "OH-MY-ZSH"
+          - "P10K"
+
+      - name: Wmulanie ulubionego konfigu p10k
+        copy:
+          src: cfg-p10k.zsh
+          dest: "{{ marcinek_data.home }}/.p10k.zsh"
+          owner: marcinek
+          group: marcinek
+          mode: 0644
+        tags:
+          - "OH-MY-ZSH"
+          - "P10K"
+
+      become: yes
+      become_user: marcinek
   
-    #   command: 
-    #   when: ansible_facts.selinux.status == 'enabled'
-    #   tags:  
-    # - name: Instalacja specyfików dla Powerline+ZSH dla systemów RedHatopodobnych
-    #   block:
-    #     - name: 

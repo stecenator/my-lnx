@@ -8,6 +8,8 @@ sp-1.iic
 toy ansible_port=2103 ansible_host=bws01.fp
 mini-shrek ansible_port=2104 ansible_host=bws01.fp
 shrek2 ansible_port=2102 ansible_host=bws01.fp
+malina.dev.null
+pi.dev.null
 
 [fp]
 toy.frr
@@ -24,8 +26,10 @@ gklm1.host-only
 centos7.host-only
 
 [domek]
-mailina.dev.null
+malina.dev.null
 pi.dev.null
 
 [work]
 toy.frr
+malina.dev.null
+pi.dev.null
