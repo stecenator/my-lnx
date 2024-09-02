@@ -72,7 +72,7 @@
     - name: zshrc dla marcinka
       copy:
         src: zshrc-pre-powerline10k
-        dest: /home/marcinek/.zshrc
+        dest: "{{ marcinek_data.home }}/.zshrc"
         owner: marcinek
         group: marcinek
         mode: 0644
