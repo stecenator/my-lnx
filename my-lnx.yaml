@@ -51,7 +51,18 @@
         owner: root
         group: root
         mode: 0644
-      # when: ansible_os_family == 'RedHat'
+      when: ansible_os_family == 'RedHat'
+      tags:
+        - "USER"
+
+    - name: śmierć śmiertelnikom, czyli sudoersi do sudo
+      copy:
+        src: sudo
+        dest: /etc/sudoers.d/
+        owner: root
+        group: root
+        mode: 0644
+      when: ansible_os_family == 'Debian'
       tags:
         - "USER"
 
@@ -76,6 +87,7 @@
         owner: marcinek
         group: marcinek
         mode: 0644
+        force: false
       tags:
         - "USER"
         - "ZSH"
