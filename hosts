@@ -6,6 +6,7 @@ sputnik.iic
 # repo-vpn.iic
 sp-1.iic
 toy ansible_port=2103 ansible_host=bws01.fp
+ubik.frr.int
 mini-shrek ansible_port=2104 ansible_host=bws01.fp
 shrek2 ansible_port=2102 ansible_host=bws01.fp
 malina.dev.null
@@ -29,7 +30,5 @@ centos7.host-only
 malina.dev.null
 pi.dev.null
 
-[work]
-toy.frr
-malina.dev.null
-pi.dev.null
+[frr]
+ubik.frr.int
