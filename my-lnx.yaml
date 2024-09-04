@@ -159,3 +159,8 @@
       become: yes
       become_user: marcinek
   
+    - name: Strefa czasowa
+      timezone:
+        name: Europe/Warsaw
+      tags:
+        - "TZ"
