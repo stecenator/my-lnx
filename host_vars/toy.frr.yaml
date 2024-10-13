@@ -1,0 +1,8 @@
+---
+# Zmienne dla hosta toy.frr
+
+# Maszyna ma być webserverem
+web_server: true
+# Nadpisanie katalogu document_root dla lighttpd
+srv_root: "/toys"
+pub_dir: "{{ srv_root }}/pub"

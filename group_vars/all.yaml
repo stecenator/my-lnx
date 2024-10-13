@@ -44,3 +44,6 @@ Fedora_grps: "{{ RedHat_grps }}" # Ro rozożniania używam ansible_os_family, wi
 
 # Tymczasowy katalog roboczy wzgędem domowego
 work_dir: "{{ ansible_env.HOME }}/work"
+
+# Przypisanie ról poszczególnym hostom odbywa się poprzez ustawienie im odpowiedniej zmiennej na "true"
+web_server: false     # domyślnie nikt nie jest webserwerem

@@ -10,6 +10,11 @@
     - role: epel    # Włącznie repo EPEL dla dystrybucji, któ©e tego potrzebują
       when: ansible_os_family == 'RedHat'
 
+    - role: web_srv
+      when: web_server
+      tags:
+        - "WEBSERVER"
+
   tasks:
     # ustalam listę grup dla usera w zależności od os family
     - set_fact: user_grps={{ ansible_os_family }}_grps
