@@ -1,0 +1,5 @@
+---
+# Zmienne dla PCSS
+  ansible_user: "ibm"
+  my_user: "ibm"
+  my_gecos: "Ajbiem Juzer"

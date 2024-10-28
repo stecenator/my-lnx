@@ -11,6 +11,8 @@ mini-shrek ansible_port=2104 ansible_host=bws01.fp
 shrek2 ansible_port=2102 ansible_host=bws01.fp
 malina.dev.null
 pi.dev.null
+tsm-c1.adm.pcss
+tsm-c2.adm.pcss
 
 [fp]
 toy.frr
@@ -32,3 +34,7 @@ pi.dev.null
 
 [frr]
 ubik.frr.int
+
+[pcss]
+tsm-c1.adm.pcss
+tsm-c2.adm.pcss

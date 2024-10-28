@@ -1,6 +1,10 @@
 ---
 # Zmienne
 # marcin_stec@pl.ibm.com
+
+my_user: "marcinek"         # bo na niektórych przesiadkach jest inny
+my_group: "{{ my_user }}"   # grupa w stylu redhatowym
+my_gecos: "Marcin Steć"
 pkgs:
   - zsh
   - zsh-syntax-highlighting

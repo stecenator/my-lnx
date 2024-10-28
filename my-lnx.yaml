@@ -71,26 +71,26 @@
       tags:
         - "USER"
 
-    - name: Dodawanie Marcinka
+    - name: Dodawanie usera {{ my_user }}
       user:
-        name: marcinek
-        comment: "Marcin Steć"
+        name: "{{ my_user }}"
+        comment: "{{ my_gecos }}"
         generate_ssh_key: True
         ssh_key_type: ed25519
         groups: "{{ vars[user_grps] }}"
         shell: /usr/bin/zsh
-        password: "{{ marcinek_pass }}"   # pochodzi z @vars/secrets.enc, które nie jest wrzucane do gita
+        password: "{{ my_user_pass }}"   # pochodzi z @vars/secrets.enc, które nie jest wrzucane do gita
         update_password: "on_create"
-      register: marcinek_data
+      register: my_user_data
       tags:
         - "USER"
 
     - name: zshrc dla marcinka
       copy:
         src: zshrc-pre-powerline10k
-        dest: "{{ marcinek_data.home }}/.zshrc"
-        owner: marcinek
-        group: marcinek
+        dest: "{{ my_user_data.home }}/.zshrc"
+        owner: "{{ my_user }}"
+        group: "{{ my_group }}"
         mode: 0644
         force: false
       tags:
@@ -124,26 +124,26 @@
         - "ZSH"
 
     - block:
-      # Chrum-chrum dla usera marcinek. Trzeba się nim stać wcześniej, bo "creates" sprawdzane jest dla
+      # Chrum-chrum dla usera my_user. Trzeba się nim stać wcześniej, bo "creates" sprawdzane jest dla
       # ansible_user a nie dla become 
       - name: Uruchamianie skryptu instalacynego oh-my-zsh dla marcinka
         shell: 
           cmd: sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)" "" --unattended
-          creates: "{{ marcinek_data.home }}/.zshrc.pre-oh-my-zsh"
+          creates: "{{ my_user_data.home }}/.zshrc.pre-oh-my-zsh"
         tags:
           - "OH-MY-ZSH"
 
       - name: Ściąganie powerlevel10k dla marcinka
         shell: 
           cmd: git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
-          creates: "{{ marcinek_data.home }}/.oh-my-zsh/themes/powerlevel10k"
+          creates: "{{ my_user_data.home }}/.oh-my-zsh/themes/powerlevel10k"
         tags:
           - "OH-MY-ZSH"
           - "P10K"
       
       - name: Ustawainie tematu ZSH na powerlevel10k
         lineinfile:
-          path: "{{ marcinek_data.home }}/.zshrc"
+          path: "{{ my_user_data.home }}/.zshrc"
           regexp: '^ZSH_THEME='
           line: ZSH_THEME=powerlevel10k/powerlevel10k
         tags:
@@ -153,16 +153,16 @@
       - name: Wmulanie ulubionego konfigu p10k
         copy:
           src: cfg-p10k.zsh
-          dest: "{{ marcinek_data.home }}/.p10k.zsh"
-          owner: marcinek
-          group: marcinek
+          dest: "{{ my_user_data.home }}/.p10k.zsh"
+          owner: "{{ my_user }}"
+          group: "{{ my_group }}"
           mode: 0644
         tags:
           - "OH-MY-ZSH"
           - "P10K"
 
       become: yes
-      become_user: marcinek
+      become_user: "{{ my_user }}"
   
     - name: Strefa czasowa
       timezone:
