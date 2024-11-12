@@ -13,6 +13,8 @@ malina.dev.null
 pi.dev.null
 tsm-c1.adm.pcss
 tsm-c2.adm.pcss
+ajax.dev.null
+otter.dev.null ansible_host=192.168.1.80    # Wifi
 
 [fp]
 toy.frr
@@ -31,6 +33,8 @@ centos7.host-only
 [domek]
 malina.dev.null
 pi.dev.null
+ajax.dev.null
+otter.dev.null
 
 [frr]
 ubik.frr.int
