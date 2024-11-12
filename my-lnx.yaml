@@ -38,6 +38,15 @@
       when: ansible_facts['pkg_mgr'] == 'dnf'
       tags:
         - "PKGS"
+    
+    - name: Ulubione paczki na perwersyjnie nowych OSach
+      dnf5:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ pkgs }}"
+      when: ansible_facts['pkg_mgr'] == 'dnf5'
+      tags:
+        - "PKGS"
 
     - name: Ulubione paczki na mniej ulibionych OSach
       apt:

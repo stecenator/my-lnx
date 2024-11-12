@@ -12,12 +12,18 @@
     #   debug:
     #     var: ansible_facts
     
-    - name: Pokaż paczkomat
+    - name: Pokaż Distro
       debug:
         msg: "Distro: {{ ansible_facts['distribution'] }}"
       tags:
         - "DBG"
       # when: ansible_facts['pkg_mgr'] == 'yum'
+
+    - name: Paczkomat
+      debug:
+        msg: "Paczkomat: {{ ansible_facts['pkg_mgr'] }}"
+      tags:
+        - "DBG"
     
     - name: Określanie listy grup w zależności od distro
       debug:
