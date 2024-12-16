@@ -9,6 +9,8 @@
   roles:
     - role: epel    # Włącznie repo EPEL dla dystrybucji, któ©e tego potrzebują
       when: ansible_os_family == 'RedHat'
+      tags:
+        - "EPEL"
 
     - role: web_srv
       when: web_server

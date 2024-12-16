@@ -73,3 +73,16 @@
         - epel-release 
         - epel-next-release
   when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '9'
+
+- name: Przygotowanie EPEL dla CentOS 10
+  block:
+    - name: Gra wstępna CentOS10
+      debug:
+        msg: "Distro: {{ ansible_facts['distribution'] }}, Wersja: {{ ansible_facts['distribution_major_version'] }}"
+    - name: Włączanie wymaganych repozytoriów
+      command: dnf config-manager --set-enabled crb
+    - name: Instlacja EPEL
+      dnf:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm"
+        state: present
+  when: ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == '10'

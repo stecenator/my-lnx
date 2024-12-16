@@ -8,9 +8,9 @@
 
   tasks:
     - set_fact: user_grps={{ ansible_os_family }}_grps
-    # - name: pokaż fakty
-    #   debug:
-    #     var: ansible_facts
+    - name: pokaż fakty
+      debug:
+        var: ansible_facts
     
     - name: Pokaż Distro
       debug:
