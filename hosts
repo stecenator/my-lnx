@@ -16,6 +16,8 @@ tsm-c1.adm.pcss
 tsm-c2.adm.pcss
 ajax.dev.null
 otter.dev.null ansible_host=192.168.1.80    # Wifi
+#
+donkey.wmb
 
 [fp]
 toy.frr
