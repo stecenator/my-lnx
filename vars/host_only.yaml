@@ -1,0 +1,3 @@
+---
+# Zmienne dla grupy host-only
+  ansible_user: "marcinek"
