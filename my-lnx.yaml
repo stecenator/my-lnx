@@ -95,6 +95,8 @@
       register: my_user_data
       tags:
         - "USER"
+        - "P10K"
+        - "ZSH"
 
     - name: zshrc dla marcinka
       copy:
