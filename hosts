@@ -1,5 +1,5 @@
 stetson.host-only
-gklm1.host-only
+becia.host-only
 centos7.host-only
 centos10.host-only
 # sputnik.iic-vpn
@@ -31,7 +31,7 @@ putnik.iic
 
 [host_only]
 stetson.host-only
-gklm1.host-only
+becia.host-only
 centos7.host-only
 
 [domek]
