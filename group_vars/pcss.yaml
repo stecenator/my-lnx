@@ -3,3 +3,4 @@
   ansible_user: "ibm"
   my_user: "ibm"
   my_gecos: "Ajbiem Juzer"
+  ansible_python_interpreter: "/usr/bin/python3.9"
