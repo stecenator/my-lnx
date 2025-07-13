@@ -49,6 +49,7 @@
       when: ansible_facts['pkg_mgr'] == 'dnf5'
       tags:
         - "PKGS"
+        - "DNF5"    # Dodane, żebe można był oskipnąć na starszych Ansiblach
 
     - name: Ulubione paczki na mniej ulibionych OSach
       apt:
