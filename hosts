@@ -16,6 +16,7 @@ malina.dev.null
 pi.dev.null
 tsm-c1.adm.pcss
 tsm-c2.adm.pcss
+sc.adm.pcss
 ajax.dev.null
 otter.dev.null ansible_host=192.168.1.80    # Wifi
 #
@@ -48,3 +49,4 @@ ubik.frr.int
 [pcss]
 tsm-c1.adm.pcss
 tsm-c2.adm.pcss
+sc.adm.pcss
