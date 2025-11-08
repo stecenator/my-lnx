@@ -51,3 +51,8 @@ work_dir: "{{ ansible_env.HOME }}/work"
 
 # Przypisanie ról poszczególnym hostom odbywa się poprzez ustawienie im odpowiedniej zmiennej na "true"
 web_server: false     # domyślnie nikt nie jest webserwerem
+
+# Nazwa repozytorium Code REady Builder (na RH, Almie, Centku, i Rockym to po prostu "crb", ale na Oracle już nie )
+# dlatego dla Oracle albo zrobię grupę, albo wpiszę jego specyficzną nazwę do hosts
+
+crb: "crb"

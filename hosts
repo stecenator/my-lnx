@@ -4,6 +4,9 @@ stetson.host-only
 becia.host-only
 centos7.host-only
 centos10.host-only
+ol-10.host-only
+rocky-10.host-only
+alma-10.host-only
 # sputnik.iic-vpn
 sputnik.iic
 # repo-vpn.iic
@@ -50,3 +53,8 @@ ubik.frr.int
 tsm-c1.adm.pcss
 tsm-c2.adm.pcss
 sc.adm.pcss
+
+[post_centos]
+ol-10.host-only
+rocky-10.host-only
+alma-10.host-only
