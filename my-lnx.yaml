@@ -60,6 +60,35 @@
       tags:
         - "PKGS"
 
+    - block:
+        - name: Extra pkgs dla Stacji Roboczych
+          package:
+            name: "{{ item }}"
+            state: present
+          with_items: "{{ pkgs_extra }}"
+          tags:
+            - "PKGS"
+            - "WORKSTATION"
+
+        - name: Konfiguracja logiops
+          copy:
+            src: logid.cfg
+            dest: /etc/logid.cfg
+            owner: root
+            group: root
+            mode: 0644
+          tags:
+            - "WORKSTATION"
+
+        - name: Włączenie i uruchomienie usługi logid
+          systemd:
+            name: logid
+            enabled: true
+            state: started
+          tags:
+            - "WORKSTATION"
+
+      when: inventory_hostname in groups['workstations']
 
     - name: Kolarze do sudo
       copy:

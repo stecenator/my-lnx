@@ -22,6 +22,7 @@ tsm-c2.adm.pcss
 sc.adm.pcss
 ajax.dev.null
 otter.dev.null ansible_host=192.168.1.80    # Wifi
+hawking.dev.null
 #
 donkey.wmb
 localhost
@@ -58,3 +59,8 @@ sc.adm.pcss
 ol-10.host-only
 rocky-10.host-only
 alma-10.host-only
+
+[workstations]
+hilbert.dev.null
+ajax.dev.null
+hawking.dev.null

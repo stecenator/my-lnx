@@ -29,6 +29,10 @@ pkgs:
   - nethogs
   - fontawesome-fonts   # to może nie działać na RH <= 8 
 
+# Paczki dodatkowe (zmienna nadpisywana np w zmiennych hosta lub grupy)
+
+pkgs_extra: []
+
 # Paczki debianowe/ubuntowe
 debs: 
   - zsh

@@ -1,0 +1,4 @@
+---
+# Zmienne dla hostów z grupy Worstations, czyli np laptopów, których używam.
+pkgs_extra:
+  - logiops
